@@ -104,8 +104,8 @@ export default defineComponent({
       audiosrc: "",
       estat: "",
       cansoner: {
-        nom: "llibre vermell",
-        numero: 45
+        nom: null,
+        numero: null
       },
       lletra: [
         // {
@@ -151,7 +151,7 @@ export default defineComponent({
     const lletraCanso = ref([])
 
     const nouParagraf = () => lletraCanso.value.push({
-      tipus: null,
+      tipus: "estrofa",
       paragraf: ""
     })
 
@@ -205,22 +205,6 @@ export default defineComponent({
 
 
       console.log("obj", obj)
-
-      // obj[canso.value.idioma.value] = {}
-
-      // obj[canso.value.idioma.value].titol = canso.value.titol
-      // obj[canso.value.idioma.value].audio = canso.value.audio
-      // obj[canso.value.idioma.value].estat = canso.value.estat
-
-      // obj[canso.value.idioma.value].cansoner = {}
-      // obj[canso.value.idioma.value].cansoner.nom = canso.value.cansoner.nom
-      // obj[canso.value.idioma.value].cansoner.numero = canso.value.cansoner.numero
-
-      // obj[canso.value.idioma.value].cansoner = {
-      //   nom: canso.value.cansoner.nom,
-      //   numero: canso.value.cansoner.numero
-      // }      
-
 
       return obj
     } )
