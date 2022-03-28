@@ -1,55 +1,66 @@
 <template>
   <q-page class="">
 
-    <q-btn class="q-ma-sm" color="primary" label="Eliminar dades" noCaps @click="eliminarDades()"/>
-
-    <div class="row q-ma-md q-gutter-xl">
+    <div class="row">
+      <div class="col">
+        <q-btn class="q-ma-sm" color="negative" label="Eliminar dades" noCaps @click="eliminarDades()"/>
+      </div>
+      <div class="col text-right">
+        <q-btn class="q-ma-sm" color="orange" label="Copiar" noCaps @click="copiarDades()"/>
+      </div>
+    </div>
+    
+    
+    <div class="row q-ma-md q-gutter-md">
       <div class="col-5" style="min-width: 0">
         <div class="column">
           
-          <div class="row items-center items-center">
-            <div class="col-2 text-negative text-negative">Idioma:</div>
-            <div class="col">
-              <q-select  v-model="canso.idioma" :options="opcionsIdioma" dense/>
+          <q-card class="q-pa-md q-mb-md">
+            <div class="row items-center items-center">
+              <div class="col-2 text-negative text-negative">Idioma:</div>
+              <div class="col">
+                <q-select  v-model="canso.idioma" :options="opcionsIdioma" dense/>
+              </div>
             </div>
-          </div>
 
 
-          <div class="row items-center">
-            <div class="col-2 text-negative">Titol:</div>
-            <div class="col">
-              <q-input dense  v-model="canso.titol" />
+            <div class="row items-center">
+              <div class="col-2 text-negative">Titol:</div>
+              <div class="col">
+                <q-input dense  v-model="canso.titol" />
+              </div>
             </div>
-          </div>
 
-          <div class="row items-center">
-            <div class="col-2 text-negative">Audio src:</div>
-            <div class="col">
-              <q-input dense  v-model="canso.audiosrc" />
+            <div class="row items-center">
+              <div class="col-2 text-negative">Audio src:</div>
+              <div class="col">
+                <q-input dense  v-model="canso.audiosrc" />
+              </div>
             </div>
-          </div>
- 
-          <div class="row items-center">
-            <div class="col-3 text-negative">Estat ('nova' o res):</div>
-            <div class="col">
-              <q-input dense v-model="canso.estat" />
+  
+            <div class="row items-center">
+              <div class="col-3 text-negative">Estat:</div>
+              <div class="col">
+                <q-select  v-model="canso.estat" :options="opcionsEstat" dense/>
+                <!-- <q-input dense v-model="canso.estat" /> -->
+              </div>
             </div>
-          </div>
 
-          <div class="row items-center">
-            <div class="col-4 text-negative">Cansoner - llibre</div>
-            <div class="col">
-              <q-input dense v-model="canso.cansoner.nom" />
+            <div class="row items-center">
+              <div class="col-4 text-negative">Cansoner - llibre</div>
+              <div class="col">
+                <q-select  v-model="canso.cansoner.nom" :options="opcionsCansoner" dense/>
+                <!-- <q-input dense v-model="canso.cansoner.nom" /> -->
+              </div>
             </div>
-          </div>
 
-          <div class="row items-center">
-            <div class="col-4 text-negative">Cansoner - numero</div>
-            <div class="col">
-              <q-input dense v-model="canso.cansoner.numero" />
+            <div class="row items-center">
+              <div class="col-4 text-negative">Cansoner - numero</div>
+              <div class="col">
+                <q-input dense v-model="canso.cansoner.numero" />
+              </div>
             </div>
-          </div>
-
+          </q-card>
           
           
           <!-- lletra de la cançó -->
@@ -72,7 +83,7 @@
       </div>
 
       <!-- INFORMACIO DEL OBJECTE RESULTANT -->
-      <div class="col" style="min-width: 0">
+      <div class="col">
         <pre>{{ canso2 }}</pre>
       </div>
       
@@ -90,6 +101,8 @@
 
 <script>
 import { defineComponent, ref, computed } from 'vue';
+import { copyToClipboard } from 'quasar'
+
 import cmpParagraf from '../components/paragraf.vue'
 
 export default defineComponent({
@@ -99,12 +112,12 @@ export default defineComponent({
   setup() {
 
     let canso = ref({
-      idioma: {label: "CATALÀ", value: "CAT"},
+      idioma: {label: "", value: null},
       titol: null,
       audiosrc: "",
-      estat: "",
+      estat: {label: "", value: null},
       cansoner: {
-        nom: null,
+        nom: {label: "", value: null},
         numero: null
       },
       lletra: [
@@ -118,12 +131,12 @@ export default defineComponent({
 
     const eliminarDades = () => {
       canso.value = {
-        idioma: {label: "CATALÀ", value: "CAT"},
+        idioma: {label: "", value: null},
         titol: "",
         audiosrc: "",
-        estat: "",
+        estat: {label: "", value: null},
         cansoner: {
-          nom: "",
+          nom: {label: "", value: null},
           numero: null
         },
         lletra: [
@@ -136,11 +149,29 @@ export default defineComponent({
       lletraCanso.value = []
     }
 
-
+    const copiarDades = () => {
+      copyToClipboard(document.querySelector('pre').innerHTML)
+      .then(() => {
+        // success!
+      })
+      .catch((error) => {
+        console.log("error al copiar", error)
+      })      
+    }
 
     const opcionsIdioma = ref ([
       {label: "CASTELLÀ", value: "ES"},
       {label: "CATALÀ", value: "CAT"}
+    ])
+
+    const opcionsCansoner = ref ([
+      {label: "BLAU", value: "blau"},
+      {label: "VERMELL", value: "vermell"}
+    ])
+
+    const opcionsEstat = ref ([
+      {label: "NOVA", value: "nova"},
+      {label: "", value: null}
     ])
 
 
@@ -195,9 +226,9 @@ export default defineComponent({
             }
           })(canso.value.audiosrc),
 
-        estat: canso.value.estat || null,
+        estat: canso.value.estat.value || null,
         cansoner: {
-          nom : canso.value.cansoner.nom,
+          nom : canso.value.cansoner.nom.value,
           numero : canso.value.cansoner.numero
         },
         lletra: lletraCanso.value
@@ -215,8 +246,11 @@ export default defineComponent({
     return { 
       canso,
       eliminarDades,
+      copiarDades,
 
       opcionsIdioma,
+      opcionsCansoner,
+      opcionsEstat,
       lletraCanso,
       nouParagraf,
       canso2,
