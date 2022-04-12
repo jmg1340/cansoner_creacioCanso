@@ -134,19 +134,7 @@ export default defineComponent({
       ]
     })
 
-		let txtAreaLletra = ref(`
-		aixo es la linia numero 11
-		aixo es la linia numero 12
-		aixo es la linia numero 13
-		aixo es la linia numero 14
-		
-
-		aixo es la linia numero 21
-		aixo es la linia numero 22
-		aixo es la linia numero 23
-		aixo es la linia numero 24
-
-		`);
+		let txtAreaLletra = ref(``);
 
 
     const eliminarDades = () => {
