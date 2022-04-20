@@ -8,7 +8,7 @@ const routes = [
     ]
   },
   {
-    path: '/2',
+    path: '/anticSistema',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') }

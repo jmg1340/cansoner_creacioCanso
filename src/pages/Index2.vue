@@ -1,21 +1,30 @@
 <template>
   <q-page class="">
 
-    <div class="row">
-      <div class="col">
+    <div class="row q-ma-sm q-gutter-md">
+      <div class="col-5 ">
         <q-btn class="q-ma-sm" color="negative" label="Eliminar dades" noCaps @click="eliminarDades()"/>
       </div>
-      <div class="col text-right">
-        <q-btn class="q-ma-sm" color="orange" label="Copiar" noCaps @click="copiarDades()"/>
+      <div class="col ">
+        <q-bar class="row items-between bg-cyan-2">
+          <div class="row q-gutter-xl">
+            <q-radio v-model="opcioEtiqPRE" val="canso" label="Tota la cançó" color="" />
+            <q-radio v-model="opcioEtiqPRE" val="lletra" label="Només la lletra" color="" />
+            <q-radio v-model="opcioEtiqPRE" val="audio" label="Només audio" color="" />
+          </div>        
+          <div class="col text-right">
+            <q-btn class="q-mx-sm" color="orange" label="Copiar" noCaps @click="copiarDades()"/>
+          </div>
+        </q-bar>
       </div>
     </div>
     
     
-    <div class="row q-ma-md q-gutter-md">
-      <div class="col-5" style="min-width: 0">
+    <div class="row q-ma-sm q-gutter-md">
+      <div class="col-5 " >
         <div class="column">
           
-          <q-card class="q-pa-md q-mb-md">
+          <q-card v-if="opcioEtiqPRE !== 'lletra'" class="q-pa-md q-mb-md">
             <div class="row items-center items-center">
               <div class="col-2 text-negative text-negative">Idioma:</div>
               <div class="col">
@@ -67,30 +76,17 @@
 
 					<q-card>
 						<q-input dense  v-model="txtAreaLletra" filled type="textarea" autogrow/>
-
 					</q-card>
-
-
-          <!-- <div v-for="(obj, i) in lletraCanso" :key="i">
-            <cmpParagraf 
-              :obj="obj"
-              :idx ="i"
-              @eventNouTipus="handlerNouTipus"
-              @eventNouParagraf="handlerNouParagraf"
-              />
-              
-          </div>
-          <q-btn class="col-1 text-white bg-teal" label="Nou Paragraf" noCaps @click="nouParagraf()"/> -->
-        
-        
         </div>
         
 
       </div>
 
       <!-- INFORMACIO DEL OBJECTE RESULTANT -->
-      <div class="col">
-        <pre>{{ canso2 }}</pre>
+      <div class="col ">
+        <pre v-if="opcioEtiqPRE == 'canso'">{{ canso2 }}</pre>
+        <pre v-else-if="opcioEtiqPRE == 'lletra'">{{ lletraCanso }}</pre>
+        <pre v-else>{{ audio2 }}</pre>
       </div>
       
     </div>
@@ -104,6 +100,11 @@
     > -->
   </q-page>
 </template>
+
+
+
+
+
 
 <script>
 import { defineComponent, ref, computed } from 'vue';
@@ -135,6 +136,8 @@ export default defineComponent({
     })
 
 		let txtAreaLletra = ref(``);
+
+    let opcioEtiqPRE = ref("canso");
 
 
     const eliminarDades = () => {
@@ -188,102 +191,95 @@ export default defineComponent({
 
     //--- LLETRA CANÇÓ -----
 
-const lletraCanso = computed ( () => {
-	
-	let arrTxtArea = txtAreaLletra.value.split("\n")
-	
-	let arrParagraf = []
-	let arrParagrafs = arrTxtArea.reduce ( (acc, linia, index, arr) =>{
+    const lletraCanso = computed ( () => {
+      
+      let arrTxtArea = txtAreaLletra.value.split("\n")
+      
+      let arrParagraf = []
+      let arrParagrafs = arrTxtArea.reduce ( (acc, linia, index, arr) =>{
 
-		linia = linia.replace(/[\t]+/g, '')  // treiem les \t si en te
-		linia = linia.trim()
-		console.log("==========================")
-		console.log("LINIA: ", "'"+linia+"'")
+        linia = linia.replace(/[\t]+/g, '')  // treiem les \t si en te
+        linia = linia.trim()
+        console.log("==========================")
+        console.log("LINIA: ", "'"+linia+"'")
 
-		if (index === 0 ) {     // si és 1ª linia 
-			console.log("estic al PRIMER element de arr")
-			if (linia.length !== 0) arrParagraf.push(linia)
-			console.log("index:", index, "arrParagraf:", arrParagraf )
-			return acc
+        
+        if (index === arr.length - 1  ) {  // si és ultima linia  
+          console.log("estic al ULTIM  element de arr i arrParagraf.length no és zero")
+          if (linia.length !== 0) arrParagraf.push(linia)
+          console.log("index:", index, "arrParagraf:", arrParagraf )
+          acc.push(arrParagraf)
+          return acc
 
-		} else if (index === arr.length - 1  &&  arrParagraf.length !== 0 ) {  // si és ultima linia i arrParagraf.length !== 0 fer un ultim push
-			console.log("estic al ULTIM  element de arr i arrParagraf.length no és zero")
-			arrParagraf.push(linia)
-			console.log("index:", index, "arrParagraf:", arrParagraf )
-			acc.push(arrParagraf)
-			return acc
+        } else if (linia.length !== 0) {
+          arrParagraf.push(linia)
+          console.log("linia.length !== 0")
+          console.log("index:", index, "arrParagraf:", arrParagraf )
+          return acc
 
-		} else if (linia.length !== 0) {
-			arrParagraf.push(linia)
-			console.log("linia.length !== 0")
-			console.log("index:", index, "arrParagraf:", arrParagraf )
-			return acc
+        } else {
+          console.log("ELSE")
+          console.log("index:", index, "arrParagraf:", arrParagraf )
+          if (arrParagraf.length !== 0) acc.push(arrParagraf)
+          arrParagraf = []
+          console.log("index:", index, "arrParagraf:", arrParagraf )
+          return acc
+        }
 
-		} else {
-			console.log("ELSE")
-			console.log("index:", index, "arrParagraf:", arrParagraf )
-			if (arrParagraf.length !== 0) acc.push(arrParagraf)
-			arrParagraf = []
-			console.log("index:", index, "arrParagraf:", arrParagraf )
-		return acc
-		}
+        
 
-		
+      }, [])
+      
+      
 
-	}, [])
-	
-	
+      /* Per cada paragraf creem un objecte
+          {
+            tipus: "estrofa" / "tornada"
+            paragraf: [paragraf]
+          }
+      */
 
-	/* Per cada paragraf creem un objecte
-			{
-				tipus: "estrofa" / "tornada"
-				paragraf: [paragraf]
-			}
-	*/
+      console.log("arrParagrafs", arrParagrafs)
 
-	const arrLletra = arrParagrafs.map( arrParagraf => {
-		let arrP = []
-		if (arrParagraf[0].toLowerCase() === "t" ){
-			arrP = arrParagraf.slice(1)
-		} else {
-			arrP = arrParagraf
-		}
+      
+      const arrLletra = arrParagrafs.map( arrParagraf => {
+        let arrP = []
+        if (arrParagraf.length !== 0   &&   arrParagraf[0].toLowerCase() === "t" ){
+          arrP = arrParagraf.slice(1)   // el paragraf serà array a partir de la segona linia
+        } else {
+          arrP = arrParagraf
+        }
 
-		return { 
-			tipus: (arrParagraf[0].toLowerCase() === "t") ? "tornada" : "estrofa" ,
-			paragraf: arrP
-		}
-	})
+        return { 
+          tipus: (arrParagraf.length !== 0   &&   arrParagraf[0].toLowerCase() === "t") ? "tornada" : "estrofa" ,
+          paragraf: arrP
+        }
+      })
 
-	
-	return [arrLletra]
-})
-
-
-
-
-/* 
-    const lletraCanso = ref([])
-
-    const nouParagraf = () => lletraCanso.value.push({
-      tipus: "estrofa",
-      paragraf: ""
+      
+      return arrLletra
     })
 
-    const handlerNouTipus = (objT) => {
-      console.log("tipus", objT)
-      lletraCanso.value[objT.index].tipus = objT.tipus
+
+    const funcAudio = (src) => {
+      console.log("estic dins funcio audio")
+      if (src.length === 0) {
+        return null
+      } else {
+        return [
+            {
+              src: src,
+              type: "audio/mp3"
+            }
+          ]
+      }
     }
 
-    const handlerNouParagraf = (objP) => {
-      console.log("objP", objP)
+    const audio2 = computed( () => { 
+      return funcAudio(canso.value.audiosrc)
+    })
 
-      let arr = objP.paragraf.split("\n")
-      arr = arr.filter( (linia) => linia.length !== 0 )
-      lletraCanso.value[objP.index].paragraf = arr
-    }
- */
-
+      
 
 
     // ----- OBJECTE RESULTAT ------
@@ -296,19 +292,7 @@ const lletraCanso = computed ( () => {
       obj[canso.value.idioma.value] = {
         titol: canso.value.titol,
         
-        audio: ((src) => {
-            console.log("estic dins funcio audio")
-            if (src.length === 0) {
-              return null
-            } else {
-              return [
-                  {
-                    src: src,
-                    type: "audio/mp3"
-                  }
-                ]
-            }
-          })(canso.value.audiosrc),
+        audio: funcAudio(canso.value.audiosrc),
 
         estat: canso.value.estat.value || null,
         cansoner: {
@@ -338,11 +322,21 @@ const lletraCanso = computed ( () => {
       lletraCanso,
       // nouParagraf,
       canso2,
+      audio2,
 			txtAreaLletra,
 
       // handlerNouTipus,
       // handlerNouParagraf
+
+      opcioEtiqPRE
     }
   }
 })
 </script>
+
+
+<style scoped>
+  .borde{
+    border: 2px solid red;
+  }
+</style>

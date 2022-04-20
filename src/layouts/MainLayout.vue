@@ -15,6 +15,15 @@
           Plantilla creació cançó
         </q-toolbar-title>
 
+        <q-bar style="" class="bg-cyan-2 text-white rounded-borders">
+          <!-- <div class="cursor-pointer non-selectable"> -->
+            <q-btn to="/" label="Nou sistema" color="indigo-10" class="text-white"/>
+            
+            <q-btn to="/anticSistema" label="Antic sistema" color="indigo-10" class="text-white"/>
+              
+          <!-- </div> -->
+        </q-bar>
+
         <!-- <div>Quasar v{{ $q.version }}</div> -->
       </q-toolbar>
     </q-header>
