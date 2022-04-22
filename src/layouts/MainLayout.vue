@@ -12,7 +12,7 @@
         /> -->
 
         <q-toolbar-title>
-          Plantilla creació cançó
+          Plantilla cançó - idioma
         </q-toolbar-title>
 
         <q-bar style="" class="bg-cyan-2 text-white rounded-borders">

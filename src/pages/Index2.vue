@@ -13,7 +13,7 @@
             <q-radio v-model="opcioEtiqPRE" val="audio" label="Només audio" color="" />
           </div>        
           <div class="col text-right">
-            <q-btn class="q-mx-sm" color="orange" label="Copiar" noCaps @click="copiarDades()"/>
+            <q-btn class="q-mx-sm" color="orange-10" label="Copiar" noCaps @click="copiarDades()"/>
           </div>
         </q-bar>
       </div>
@@ -75,7 +75,7 @@
           <!-- lletra de la cançó -->
 
 					<q-card>
-						<q-input dense  v-model="txtAreaLletra" filled type="textarea" autogrow/>
+						<q-input dense  v-model="txtAreaLletra" filled type="textarea" autogrow />
 					</q-card>
         </div>
         
@@ -156,8 +156,9 @@ export default defineComponent({
           //   paragraf: []
           // }
         ],
-				txtAreaLletra: ""
+				
       }
+			txtAreaLletra.value = ""
       lletraCanso.value = []
     }
 
