@@ -269,7 +269,7 @@ export default defineComponent({
       } else {
         return [
             {
-              src: src,
+              src: `https://docs.google.com/uc?export=&id=${src}`,
               type: "audio/mp3"
             }
           ]
