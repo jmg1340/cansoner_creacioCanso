@@ -163,7 +163,10 @@ export default defineComponent({
     }
 
     const copiarDades = () => {
-      copyToClipboard(document.querySelector('pre').innerHTML)
+      let strPRE = document.querySelector('pre').innerHTML
+      strPRE = strPRE.replace(/&amp;/g, "&")
+
+      copyToClipboard(strPRE)
       .then(() => {
         // success!
       })
@@ -269,7 +272,7 @@ export default defineComponent({
       } else {
         return [
             {
-              src: `https://docs.google.com/uc?export=&id=${src}`,
+              src: "https://docs.google.com/uc?export=&id="+src,
               type: "audio/mp3"
             }
           ]
