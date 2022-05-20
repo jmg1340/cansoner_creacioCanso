@@ -41,14 +41,14 @@
             </div>
 
             <div class="row items-center">
-              <div class="col-2 text-negative">Audio (només codi):</div>
+              <div class="col-4 text-negative">Audio (només codi):</div>
               <div class="col">
                 <q-input dense  v-model="canso.audiosrc" />
               </div>
             </div>
   
             <div class="row items-center">
-              <div class="col-3 text-negative">Estat:</div>
+              <div class="col-4 text-negative">Estat:</div>
               <div class="col">
                 <q-select  v-model="canso.estat" :options="opcionsEstat" dense/>
                 <!-- <q-input dense v-model="canso.estat" /> -->
