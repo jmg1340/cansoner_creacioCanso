@@ -41,7 +41,7 @@
             </div>
 
             <div class="row items-center">
-              <div class="col-2 text-negative">Audio src:</div>
+              <div class="col-2 text-negative">Audio (només codi):</div>
               <div class="col">
                 <q-input dense  v-model="canso.audiosrc" />
               </div>
