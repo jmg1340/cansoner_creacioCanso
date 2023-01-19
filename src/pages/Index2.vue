@@ -11,19 +11,19 @@
             <q-radio v-model="opcioEtiqPRE" val="canso" label="Tota la cançó" color="" />
             <q-radio v-model="opcioEtiqPRE" val="lletra" label="Només la lletra" color="" />
             <q-radio v-model="opcioEtiqPRE" val="audio" label="Només audio" color="" />
-          </div>        
+          </div>
           <div class="col text-right">
             <q-btn class="q-mx-sm" color="orange-10" label="Copiar" noCaps @click="copiarDades()"/>
           </div>
         </q-bar>
       </div>
     </div>
-    
-    
+
+
     <div class="row q-ma-sm q-gutter-md">
       <div class="col-5 " >
         <div class="column">
-          
+
           <q-card v-if="opcioEtiqPRE !== 'lletra'" class="q-pa-md q-mb-md">
             <div class="row items-center items-center">
               <div class="col-2 text-negative text-negative">Idioma:</div>
@@ -46,7 +46,7 @@
                 <q-input dense  v-model="canso.audiosrc" />
               </div>
             </div>
-  
+
             <div class="row items-center">
               <div class="col-4 text-negative">Estat:</div>
               <div class="col">
@@ -70,15 +70,15 @@
               </div>
             </div>
           </q-card>
-          
-          
+
+
           <!-- lletra de la cançó -->
 
 					<q-card>
 						<q-input dense  v-model="txtAreaLletra" filled type="textarea" autogrow />
 					</q-card>
         </div>
-        
+
 
       </div>
 
@@ -88,7 +88,7 @@
         <pre v-else-if="opcioEtiqPRE == 'lletra'">{{ lletraCanso }}</pre>
         <pre v-else>{{ audio2 }}</pre>
       </div>
-      
+
     </div>
 
 
@@ -156,7 +156,7 @@ export default defineComponent({
           //   paragraf: []
           // }
         ],
-				
+
       }
 			txtAreaLletra.value = ""
       lletraCanso.value = []
@@ -172,7 +172,7 @@ export default defineComponent({
       })
       .catch((error) => {
         console.log("error al copiar", error)
-      })      
+      })
     }
 
     const opcionsIdioma = ref ([
@@ -196,9 +196,9 @@ export default defineComponent({
     //--- LLETRA CANÇÓ -----
 
     const lletraCanso = computed ( () => {
-      
+
       let arrTxtArea = txtAreaLletra.value.split("\n")
-      
+
       let arrParagraf = []
       let arrParagrafs = arrTxtArea.reduce ( (acc, linia, index, arr) =>{
 
@@ -207,8 +207,8 @@ export default defineComponent({
         console.log("==========================")
         console.log("LINIA: ", "'"+linia+"'")
 
-        
-        if (index === arr.length - 1  ) {  // si és ultima linia  
+
+        if (index === arr.length - 1  ) {  // si és ultima linia
           console.log("estic al ULTIM  element de arr i arrParagraf.length no és zero")
           if (linia.length !== 0) arrParagraf.push(linia)
           console.log("index:", index, "arrParagraf:", arrParagraf )
@@ -230,11 +230,11 @@ export default defineComponent({
           return acc
         }
 
-        
+
 
       }, [])
-      
-      
+
+
 
       /* Per cada paragraf creem un objecte
           {
@@ -245,7 +245,7 @@ export default defineComponent({
 
       console.log("arrParagrafs", arrParagrafs)
 
-      
+
       const arrLletra = arrParagrafs.map( arrParagraf => {
         let arrP = []
         if (arrParagraf.length !== 0   &&   arrParagraf[0].toLowerCase() === "t" ){
@@ -254,13 +254,13 @@ export default defineComponent({
           arrP = arrParagraf
         }
 
-        return { 
+        return {
           tipus: (arrParagraf.length !== 0   &&   arrParagraf[0].toLowerCase() === "t") ? "tornada" : "estrofa" ,
           paragraf: arrP
         }
       })
 
-      
+
       return arrLletra
     })
 
@@ -279,11 +279,11 @@ export default defineComponent({
       }
     }
 
-    const audio2 = computed( () => { 
+    const audio2 = computed( () => {
       return funcAudio(canso.value.audiosrc)
     })
 
-      
+
 
 
     // ----- OBJECTE RESULTAT ------
@@ -295,13 +295,13 @@ export default defineComponent({
 
       obj[canso.value.idioma.value] = {
         titol: canso.value.titol,
-        
+
         audio: funcAudio(canso.value.audiosrc),
 
         estat: canso.value.estat.value || null,
         cansoner: {
           nom : canso.value.cansoner.nom.value,
-          numero : canso.value.cansoner.numero
+          numero : parseInt(canso.value.cansoner.numero)
         },
         lletra: lletraCanso.value
       }
@@ -315,7 +315,7 @@ export default defineComponent({
 
 
 
-    return { 
+    return {
       canso,
       eliminarDades,
       copiarDades,

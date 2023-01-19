@@ -9,12 +9,12 @@
         <q-btn class="q-ma-sm" color="orange" label="Copiar" noCaps @click="copiarDades()"/>
       </div>
     </div>
-    
-    
+
+
     <div class="row q-ma-md q-gutter-md">
       <div class="col-5" style="min-width: 0">
         <div class="column">
-          
+
           <q-card class="q-pa-md q-mb-md">
             <div class="row items-center items-center">
               <div class="col-2 text-negative text-negative">Idioma:</div>
@@ -37,7 +37,7 @@
                 <q-input dense  v-model="canso.audiosrc" />
               </div>
             </div>
-  
+
             <div class="row items-center">
               <div class="col-3 text-negative">Estat:</div>
               <div class="col">
@@ -61,12 +61,12 @@
               </div>
             </div>
           </q-card>
-          
-          
+
+
           <!-- lletra de la cançó -->
 
           <div v-for="(obj, i) in lletraCanso" :key="i">
-            <cmpParagraf 
+            <cmpParagraf
               :obj="obj"
               :idx ="i"
               @eventNouTipus="handlerNouTipus"
@@ -75,10 +75,10 @@
               <!-- {{i}} -->
           </div>
           <q-btn class="col-1 text-white bg-teal" label="Nou Paragraf" noCaps @click="nouParagraf()"/>
-        
-        
+
+
         </div>
-        
+
 
       </div>
 
@@ -86,7 +86,7 @@
       <div class="col">
         <pre>{{ canso2 }}</pre>
       </div>
-      
+
     </div>
 
 
@@ -156,7 +156,7 @@ export default defineComponent({
       })
       .catch((error) => {
         console.log("error al copiar", error)
-      })      
+      })
     }
 
     const opcionsIdioma = ref ([
@@ -211,7 +211,7 @@ export default defineComponent({
 
       obj[canso.value.idioma.value] = {
         titol: canso.value.titol,
-        
+
         audio: ((src) => {
             console.log("estic dins funcio audio")
             if (src.length === 0) {
@@ -229,7 +229,7 @@ export default defineComponent({
         estat: canso.value.estat.value || null,
         cansoner: {
           nom : canso.value.cansoner.nom.value,
-          numero : canso.value.cansoner.numero
+          numero : parseInt(canso.value.cansoner.numero)
         },
         lletra: lletraCanso.value
       }
@@ -243,7 +243,7 @@ export default defineComponent({
 
 
 
-    return { 
+    return {
       canso,
       eliminarDades,
       copiarDades,
